@@ -363,6 +363,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *body64 = [body cdvwkStringForKey:@"body"];
     if (body64.length) {
         request.HTTPBody = [[NSData alloc] initWithBase64EncodedString:body64 options:0];
+        long long bodyLength = [request.HTTPBody length];
+        [request setValue:[[NSNumber numberWithLongLong:bodyLength] stringValue] forHTTPHeaderField:@"Content-Length"];
     }
     
     NSURLSessionDataTask *task = [self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) { // FortityFalsePositive
